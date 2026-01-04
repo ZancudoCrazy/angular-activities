@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { GifsService } from '../../services/gifs.service';
 
 interface MenuOption{
   label: string;
@@ -15,6 +16,8 @@ interface MenuOption{
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SideMenuBody {
+  gifsService = inject(GifsService);
+  
   menuOptions: MenuOption[] = [
     {
       label: 'Trending',

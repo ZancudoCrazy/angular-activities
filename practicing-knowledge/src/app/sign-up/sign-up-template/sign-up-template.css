@@ -1,0 +1,15 @@
+.sign-up-bg{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    background-color: #222;
+}
+
+.sign-up-container{
+    margin: auto;
+    width: 600px;
+    height: 500px;
+    padding: 20px;
+    border-radius: 14px;
+    background-color: #FFF;
+}

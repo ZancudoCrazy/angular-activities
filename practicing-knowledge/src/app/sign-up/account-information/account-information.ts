@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'app-account-information',
   imports: [],
-  templateUrl: './navbar.html',
+  templateUrl: './account-information.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Navbar { }
+export default class AccountInformation { }
