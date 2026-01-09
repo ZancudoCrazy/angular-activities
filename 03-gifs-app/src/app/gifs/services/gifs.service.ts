@@ -14,9 +14,19 @@ const loadHistory = (): Record<string, Gif[]> => {
 @Injectable({  providedIn: 'root' })
 export class GifsService {
     private http = inject(HttpClient);
+    private trendingPage = signal<number>(0);
+    trendingGifLoading = signal<boolean>(false)
     trendingGifs =  signal<Gif[]>([]);
-    trendingGifLoading = signal<boolean>(true)
-    
+    trendingGifGroup = computed<Gif[][]>( () => {
+        const groups = [];
+        for(let i = 0; i < this.trendingGifs().length; i+= 3){
+            groups.push( this.trendingGifs().slice(i, i + 3));
+
+        }
+
+        return groups;
+    });
+
     searchHistory = signal<Record<string, Gif[]>>(loadHistory());
     searchHistoryKeys = computed(() => Object.keys(this.searchHistory()));    
 
@@ -25,19 +35,29 @@ export class GifsService {
     }
 
     loadTrendingGifs() {
+        if(this.trendingGifLoading()) return;
+
+        this.trendingGifLoading.set(true);
+
         this.http.get<GiphyResponse>(`${environment.giphyUrl}/gifs/trending`, {
             params: {
                 api_key: environment.giphyApiKey,
                 limit: '20',
-                rating: 'g'
+                offset: this.trendingPage() * 20
             }
         }).subscribe( ( payload ) => {
-           const gifs = GifMapper.mapGiphyItemsToGifArray(payload.data);
-           this.trendingGifs.set(gifs);
+            const gifs = GifMapper.mapGiphyItemsToGifArray(payload.data);
+            this.trendingGifs.update( currentGifs => [
+                ...currentGifs,
+                ...gifs
+            ]);
            this.trendingGifLoading.set(false);
-           console.log({gifs})
+           this.trendingPage.update( current => current + 1);
         } );
+        
     }
+
+    
 
     searchGifs(query: string): Observable<Gif[]>{
         return this.http.get<GiphyResponse>(`${environment.giphyUrl}/gifs/search`,{
