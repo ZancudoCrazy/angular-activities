@@ -1,29 +1,11 @@
-<section class="flex flex-row gap-2 mt-2">
-    <input type="text" name="" id="" 
-        placeholder=""
-        autofocus
-        class="input input-bordered mr-2 w-56"
-        #txtSearch
-        (keyup.enter)="onSearch(txtSearch.value)"/>
-    <button class="btn btn-primary"
-        (click)="onSearch(txtSearch.value)">Buscar</button>
-</section>
+<country-search
+    placeholder="Buscar por capital de mi país"
+    (value) = "query.set($event)"
+    />
 
-<section class="mt-5">
-    <table class="table table-md mt-2 w-full">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Icono</th>
-                <th>Bandera</th>
-                <th>Nombre</th>
-                <th>Capital</th>
-                <th>Poblacion</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-           tr 
-        </tbody>
-    </table>
-</section>
+@if (countryResource.error()) {
+    <h3>{{countryResource.error()}}</h3>
+}
+@if(countryResource.hasValue()) {
+    <country-list [countries]="countryResource.value()"/>
+}
