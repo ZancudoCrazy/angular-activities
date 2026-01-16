@@ -4,7 +4,8 @@ import { ContrySearch } from "../../components/country-search/country-search";
 import { Country } from '../../services/country';
 import { CountryMapper } from '../../mappers/country.mapper';
 import { CountryInterface } from '../../interfaces/country.interface';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-by-capital-page',
@@ -15,19 +16,30 @@ export class ByCapitalPage {
   countrySerivce = inject(Country);
   query = signal('');
 
-  countryResource = resource({
+  countryResource = rxResource({
     params: () => ({ query: this.query() }),
     
-    loader: async({ params }) => {
-      if( !this.query() ) return [];
+    stream : ({ params }) => {
+      if( !this.query() ) return of([]);
       
 
-      return await firstValueFrom(
-         this.countrySerivce.searchByCapital( params.query )
-      );
-    }
+      return this.countrySerivce.searchByCapital( params.query )
+    },
     
   });
+  // countryResource = resource({
+  //   params: () => ({ query: this.query() }),
+    
+  //   loader: async({ params }) => {
+  //     if( !this.query() ) return [];
+      
+
+  //     return await firstValueFrom(
+  //        this.countrySerivce.searchByCapital( params.query )
+  //     );
+  //   }
+    
+  // });
   // isLoading = signal(false);
   // isError = signal<string|null>(null);
   // countries = signal<CountryInterface[]>([]);

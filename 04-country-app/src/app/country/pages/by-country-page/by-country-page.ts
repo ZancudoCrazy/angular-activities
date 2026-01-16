@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, resource, signal, Signal, WritableSignal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ContrySearch } from "../../components/country-search/country-search";
 import { CountryList } from "../../components/country-list/country-list";
 import { ActivatedRoute } from '@angular/router';
-import { firstValueFrom, map } from 'rxjs';
+import { firstValueFrom, map, of } from 'rxjs';
 import { Country } from '../../services/country';
 
 @Component({
@@ -16,12 +16,12 @@ export class ByCountryPage {
   countryService  = inject(Country);
   country = signal('');
 
-  countryResource = resource({
+  countryResource = rxResource({
     params : (  ) => ({query: this.country()}),
-    loader: async ({params}) => {
-      if(!this.country() ) return;
+    stream: ({params}) => {
+      if(!this.country() ) return of([]);
 
-      return await firstValueFrom( this.countryService.searchByCountry( params.query ) )
+      return this.countryService.searchByCountry( params.query ) 
     } 
   })
 

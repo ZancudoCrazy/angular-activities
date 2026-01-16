@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { RESTCountry } from '../interfaces/rest-country.interfaces';
-import { map, Observable, catchError, throwError, pipe } from 'rxjs';
+import { map, Observable, catchError, throwError, pipe, delay } from 'rxjs';
 import { CountryMapper } from '../mappers/country.mapper';
 import { CountryInterface } from '../interfaces/country.interface';
 
@@ -30,12 +30,22 @@ export class Country {
     return this.http
       .get<RESTCountry[]>(`${API_URL}/name/${query}`)
       .pipe(
-        map(res => {
-          console.log(res)
-          return CountryMapper.countryArrMapper(res);
-        }),
+        map(CountryMapper.countryArrMapper),
+        //delay(3000),
         catchError( err => {
           return throwError( ()  => `No hay coincidencias para el país ${query}`)
+        })
+      )
+  }
+  
+  searchCountryByAlfaCode(code: string) {
+    return this.http
+      .get<RESTCountry[]>(`${API_URL}/alpha/${code}`)
+      .pipe(
+        map(CountryMapper.countryArrMapper),
+        map( countries => countries.at(0)),
+        catchError( err => {
+          return throwError( ()  => `No hay coincidencias para el país ${code}`)
         })
       )
   }

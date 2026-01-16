@@ -1,0 +1,23 @@
+<!-- <section class="mx-10">
+    <h1 class="text-3xl badge badge-lg badge-outline  badge-primary py-5">{{country().name}}</h1>
+    <h1 class="text-xl font-thin">Población {{country().population | number}}</h1>
+</section> -->
+
+<div class="card bg-base-100 w-96 shadow-sm">
+  <figure>
+    <img 
+        [src]="country().flagSvg" 
+        [alt]="country().name"
+        >
+  </figure>
+  <div class="card-body">
+    <h2 class="card-title">
+      {{country().name}}
+      <div class="badge badge-secondary">{{country().cca2}}</div>
+    </h2>
+    <div class="card-actions justify-end">
+      <div class="badge badge-outline">{{country().capital}}</div>
+      <div class="badge badge-outline badge-secondary">{{country().population | number}}</div>
+    </div>
+  </div>
+</div>
