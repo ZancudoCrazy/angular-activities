@@ -1,6 +1,7 @@
 <country-search 
     placeholder="Buscar por país'"
-    (value)="country.set($event)"/>
+    (value)="country.set($event)"
+    [initialValue]="country()"/>
 
 <country-list 
     [countries]="countryResource.value() ?? []" 

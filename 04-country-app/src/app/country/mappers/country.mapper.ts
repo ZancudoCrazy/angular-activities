@@ -9,7 +9,7 @@ export class CountryMapper{
             flag: restCountry.flag,
             flagSvg: restCountry.flags.svg,
             name: restCountry.translations[lan].common,
-            capital: restCountry.capital.join(','),
+            capital: restCountry.capital?.join(','),
             population: restCountry.population,
         };
     }
