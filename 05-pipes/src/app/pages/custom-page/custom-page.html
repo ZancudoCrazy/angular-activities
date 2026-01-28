@@ -1,1 +1,87 @@
-<p>custom-page works!</p>,
+<section class="mx-10">
+    <h1 class="txt-2xl font-bold">Custom Pipes</h1>
+    <h3 class="text-xl font-thin">No included Pipes in Angular</h3>
+</section>
+<div class="stats shadow">
+  <div class="stat">
+    <div class="stat-title">ToggleCase Pipe</div>
+    <div class="stat-value">{{ name() | toggleCase : upperCase() }}</div>
+    <div class="stat-desc">{{ name() }}</div>
+    <button class="btn btn-primary"
+        (click)="changePipe()">ToggleCase</button>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+
+<div class="overflow-x-auto w-full p x-2">
+    <section class="mb-2">
+        <h1 class="txt-2xl font-bold">Filter by: {{searchQuery()}} Order by: {{sortBy() | titlecase}}</h1>
+
+        <div class="flex gap-2 justify-end w-full mt-2">
+
+            <input
+                type="text"
+                class="input input-border w-full maz-w-xs"
+                (input)="searchQuery.set(txtSearch.value)"
+                #txtSearch
+                placeholder="Search Hero">
+
+            <button class="btn btn-primary"
+            (click)="sortBy.set('name')">By name</button>
+            <button class="btn btn-accent"
+            (click)="sortBy.set('canFly')">By CanFly</button>
+            <button class="btn btn-secondary"
+            (click)="sortBy.set('color')">By Color</button>
+            <button class="btn btn-info"
+            (click)="sortBy.set('creator')">By creator</button>
+        </div>
+    </section>
+
+  <table class="table table-xs w-full">
+    <!-- head -->
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>
+            Can fly
+        </th>
+        <th>Color</th>
+        <th>Creator</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- row 1 -->
+       @for (hero of heros() | heroFilter: searchQuery() | heroSortBy:sortBy()  ; track hero.id; let i = $index) {
+           <tr>
+             <th>{{ i + 1}}</th>
+             <td>{{ hero.name }}</td>
+             <td>
+                <span 
+                    class="txt-xs w-44"
+                    [class.text-success]="hero.canFly"
+                    [class.text-primary]="!hero.canFly">
+                    {{ hero.canFly | canFly}}
+                </span>
+            </td>
+             <td>
+                <span class="¿"
+                    [style.color]="hero.color | heroColor : true">
+                    {{ hero.color | heroColor | titlecase}}
+                </span>
+            </td>
+             <td>
+                <span 
+                [class.text-primary]="hero.creator === 0"
+                [class.text-success]="hero.creator === 1"
+                >
+                    {{ hero.creator | heroCreator }}
+                </span>
+            </td>
+           </tr>
+       }
+    </tbody>
+  </table>
+</div>
