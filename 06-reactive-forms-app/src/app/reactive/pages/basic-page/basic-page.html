@@ -14,7 +14,8 @@
                     <input type="text"
                            class="form-control"
                            placeholder="Nombre del producto"
-                           formControlName="name">
+                           formControlName="name"
+                            (input)="myForm.controls['name'].markAsTouched({onlySelf:true})">
                     @if (formUtils.isValidField(myForm,'name') ) {
                         <span class="form-text text-danger">
                             <!-- Debe de ser de 3 letras -->

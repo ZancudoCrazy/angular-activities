@@ -8,8 +8,10 @@
         <label class="col-sm-3 col-form-label">Nombre</label>
         <div class="col-sm-9">
             <input class="form-control"
+                type="text"
                 formControlName="name"
-                   placeholder="Nombre de la persona">
+                   placeholder="Nombre de la persona"
+                   (input)="myForm.controls['name'].markAsTouched({onlySelf:true})">
             @if (formUtils.isValidField(myForm, 'name')) {
                 <span class="form-text text-danger">
                     {{formUtils.getFieldError(myForm, 'name')}}

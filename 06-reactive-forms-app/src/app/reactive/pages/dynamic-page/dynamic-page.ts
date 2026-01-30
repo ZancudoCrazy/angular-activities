@@ -14,7 +14,7 @@ export class DynamicPage {
   formUtils = FormUtils;
 
   myForm: FormGroup = this.formBuilder.group({
-    name: ['', Validators.required, Validators.minLength(3)],
+    name: ['', [Validators.required, Validators.minLength(3)]],
     favoriteGames: this.formBuilder.array(
       [
         ['MetalGear', Validators.required],
