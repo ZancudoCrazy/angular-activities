@@ -69,6 +69,17 @@ export class FormUtils{
         return null;
     }
 
+    static notStrider(control: AbstractControl): ValidationErrors | null{
+        const formValue = control.value;
+        if(formValue.toLowerCase() === 'strider'){
+
+            return{
+                notStrider: true
+            }
+        }
+        return null;
+    }
+
     private static getErrorMsg(errors: ValidationErrors): string | null{
         for(const key of Object.keys(errors)){
             switch(key){
@@ -87,6 +98,8 @@ export class FormUtils{
                     return 'Error de patron';
                 case 'emailTaken':
                     return 'Este correo ya ha sido registrado';
+                case 'notStrider':
+                    return 'Nombre de usuario no permitido';
                 default:
                     return `Error de validacion no contralado ${key}`
             }
