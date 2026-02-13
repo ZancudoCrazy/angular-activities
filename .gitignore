@@ -41,3 +41,8 @@ yarn-error.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Environments
+*/.env
+*/environment.development.ts
+*/environment.ts
