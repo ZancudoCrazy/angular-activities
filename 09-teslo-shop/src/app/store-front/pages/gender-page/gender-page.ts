@@ -5,15 +5,18 @@ import { ProductGenderPipe } from '@products/pipes/product-gender.pipe';
 import { ProductsService } from '@products/services/products.service';
 import { map, of } from 'rxjs';
 import { ProductCard } from "@products/components/product-card/product-card";
+import { PaginationService } from '@shared/components/pagination/pagination.service';
+import { Pagination } from "@shared/components/pagination/pagination";
 
 @Component({
   selector: 'app-gender-page',
-  imports: [ProductGenderPipe, ProductCard],
+  imports: [ProductGenderPipe, ProductCard, Pagination],
   templateUrl: './gender-page.html',
 })
 export class GenderPage {
   private activeRoutes = inject(ActivatedRoute);
   private productService = inject(ProductsService);
+  paginationService = inject( PaginationService );
 
   gender = toSignal(
     this.activeRoutes.params.pipe(
@@ -23,13 +26,14 @@ export class GenderPage {
 
   productResource = rxResource({
     params: () => ({
-      gender: this.gender()
+      gender: this.gender(),
+      offset: this.paginationService.currentPage() - 1,
     }),
     stream: ({ params }) => {
-      const { gender } = params;
-      if(!gender) return of([]);
+      const { gender, offset } = params;
       return this.productService.getProducts({
-        gender
+        gender,
+        offset: offset * 9,
       })
     }
   })

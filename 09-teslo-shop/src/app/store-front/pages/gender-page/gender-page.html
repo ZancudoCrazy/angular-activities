@@ -4,11 +4,10 @@
     </span>
 </h1>
 
-
 <div class="divider"></div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2 gap-3">
-    @for (product of productResource.value(); track product.id) {
+    @for (product of productResource.value()?.products; track product.id) {
         <product-card [product]="product" />
     }
     <!-- Empty -->
@@ -16,3 +15,11 @@
         <h1>No hay products </h1>
     }
 </div>
+
+<div class="divider"></div>
+
+
+<app-pagination 
+    [pages]="productResource.value()?.pages ?? 0"
+    [currentPage]="paginationService.currentPage()"
+    />
