@@ -33,6 +33,7 @@ export class AuthService {
 
   user = computed<User| null>(() => this._user());
   token = computed<string | null>(() => this._token());
+  isAdmin = computed(() => this._user()?.roles.includes('admin') ?? false);
 
   login(email:string, password: string): Observable<boolean>{
     return this.http.post<AuthResponse>(`${ baseUrl}/auth/login`, {
@@ -89,6 +90,7 @@ export class AuthService {
     this._user.set(user);
     this._token.set(token);
     this._authStatus.set('authenticated')
+    console.log(user, user.roles.includes('admin'));
     localStorage.setItem('token', token);
     return true;
   } 
